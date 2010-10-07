@@ -75,8 +75,8 @@ static NSString * const SUUpdaterDefaultsObservationContext = @"SUUpdaterDefault
         host = [[SUHost alloc] initWithBundle:bundle];
 		
 		// Saving-the-developer-from-a-stupid-mistake-check:
-		if (![[[self feedURL] scheme] isEqualToString:@"https"] && ![host publicDSAKey])
-			NSRunAlertPanel(@"Insecure update error!", @"For security reasons, you need to distribute your appcast over SSL or sign your updates. See Sparkle's documentation for more information.", @"OK", nil, nil);
+//		if (![[[self feedURL] scheme] isEqualToString:@"https"] && ![host publicDSAKey])
+//			NSRunAlertPanel(@"Insecure update error!", @"For security reasons, you need to distribute your appcast over SSL or sign your updates. See Sparkle's documentation for more information.", @"OK", nil, nil);
 		
         // This runs the permission prompt if needed, but never before the app has finished launching because the runloop won't run before that
         [self performSelector:@selector(startUpdateCycle) withObject:nil afterDelay:0];
@@ -297,8 +297,8 @@ static NSString * const SUUpdaterDefaultsObservationContext = @"SUUpdaterDefault
 {
 	// A value in the user defaults overrides one in the Info.plist (so preferences panels can be created wherein users choose between beta / release feeds).
 	NSString *appcastString = [host objectForKey:SUFeedURLKey];
-	if (!appcastString) // Can't find an appcast string!
-		[NSException raise:@"SUNoFeedURL" format:@"You must specify the URL of the appcast as the SUFeedURL key in either the Info.plist or the user defaults!"];
+//	if (!appcastString) // Can't find an appcast string!
+//		[NSException raise:@"SUNoFeedURL" format:@"You must specify the URL of the appcast as the SUFeedURL key in either the Info.plist or the user defaults!"];
 	NSCharacterSet* quoteSet = [NSCharacterSet characterSetWithCharactersInString: @"\"\'"]; // Some feed publishers add quotes; strip 'em.
 	return [NSURL URLWithString:[appcastString stringByTrimmingCharactersInSet:quoteSet]];
 }
