@@ -47,6 +47,8 @@
 - (void)setSendsSystemProfile:(BOOL)sendsSystemProfile;
 - (BOOL)sendsSystemProfile;
 
+- (NSArray*)feedParameters;
+
 - (void)setAutomaticallyDownloadsUpdates:(BOOL)automaticallyDownloadsUpdates;
 - (BOOL)automaticallyDownloadsUpdates;
 
