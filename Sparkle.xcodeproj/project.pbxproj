@@ -1225,6 +1225,7 @@
 			baseConfigurationReference = FA1941CA0D94A70100DD942E /* ConfigFrameworkDebug.xcconfig */;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = supported;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -1234,6 +1235,7 @@
 			buildSettings = {
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_OBJC_GC = supported;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
@@ -1284,6 +1286,7 @@
 			baseConfigurationReference = 61072EB20DF2640C008FE88B /* ConfigFrameworkReleaseGCSupport.xcconfig */;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = supported;
+				SDKROOT = macosx10.6;
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
 		};
@@ -1300,6 +1303,7 @@
 			baseConfigurationReference = FA1941D40D94A70100DD942E /* ConfigRelaunchRelease.xcconfig */;
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = "";
+				SDKROOT = macosx10.6;
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
 		};
@@ -1345,6 +1349,7 @@
 			baseConfigurationReference = FA1941D30D94A70100DD942E /* ConfigRelaunchDebug.xcconfig */;
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = "";
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -1353,6 +1358,7 @@
 			baseConfigurationReference = FA1941D40D94A70100DD942E /* ConfigRelaunchRelease.xcconfig */;
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = "";
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
