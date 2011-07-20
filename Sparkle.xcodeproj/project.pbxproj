@@ -24,7 +24,6 @@
 		5D1AF59A0FD767E50065DB48 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF5990FD767E50065DB48 /* libz.dylib */; };
 		5D1AF59C0FD768010065DB48 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF59B0FD768010065DB48 /* libcrypto.dylib */; };
 		5D1AF82B0FD768180065DB48 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF5990FD767E50065DB48 /* libz.dylib */; };
-		5D1AF82C0FD7681A0065DB48 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF59B0FD768010065DB48 /* libcrypto.dylib */; };
 		610134730DD250470049ACDF /* SUUpdateDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 610134710DD250470049ACDF /* SUUpdateDriver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		610134740DD250470049ACDF /* SUUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 610134720DD250470049ACDF /* SUUpdateDriver.m */; };
 		6101347B0DD2541A0049ACDF /* SUProbingUpdateDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 610134790DD2541A0049ACDF /* SUProbingUpdateDriver.h */; settings = {ATTRIBUTES = (); }; };
@@ -408,7 +407,6 @@
 				5D06E8FD0FD68D6B005AE3F6 /* libbz2.dylib in Frameworks */,
 				5D1AF58A0FD7678C0065DB48 /* libxar.1.dylib in Frameworks */,
 				5D1AF82B0FD768180065DB48 /* libz.dylib in Frameworks */,
-				5D1AF82C0FD7681A0065DB48 /* libcrypto.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
