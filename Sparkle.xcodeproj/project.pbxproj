@@ -1225,7 +1225,25 @@
 			baseConfigurationReference = FA1941CA0D94A70100DD942E /* ConfigFrameworkDebug.xcconfig */;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = supported;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wno-unused-parameter",
+					"-Wundef",
+					"-Wendif-labels",
+					"-Wpointer-arith",
+					"-Wcast-align",
+					"-Wwrite-strings",
+					"-Wmissing-format-attribute",
+					"-Wpacked",
+					"-Wredundant-decls",
+					"-Winline",
+					"-Wdisabled-optimization",
+					"-Wformat=2",
+					"-Winvalid-pch",
+				);
 			};
 			name = Debug;
 		};
@@ -1235,7 +1253,25 @@
 			buildSettings = {
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_OBJC_GC = supported;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wno-unused-parameter",
+					"-Wundef",
+					"-Wendif-labels",
+					"-Wpointer-arith",
+					"-Wcast-align",
+					"-Wwrite-strings",
+					"-Wmissing-format-attribute",
+					"-Wpacked",
+					"-Wredundant-decls",
+					"-Winline",
+					"-Wdisabled-optimization",
+					"-Wformat=2",
+					"-Winvalid-pch",
+				);
 			};
 			name = Release;
 		};
@@ -1286,7 +1322,25 @@
 			baseConfigurationReference = 61072EB20DF2640C008FE88B /* ConfigFrameworkReleaseGCSupport.xcconfig */;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = supported;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wno-unused-parameter",
+					"-Wundef",
+					"-Wendif-labels",
+					"-Wpointer-arith",
+					"-Wcast-align",
+					"-Wwrite-strings",
+					"-Wmissing-format-attribute",
+					"-Wpacked",
+					"-Wredundant-decls",
+					"-Winline",
+					"-Wdisabled-optimization",
+					"-Wformat=2",
+					"-Winvalid-pch",
+				);
 			};
 			name = "Release (GC dual-mode; 10.5-only)";
 		};
