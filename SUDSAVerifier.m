@@ -7,6 +7,7 @@
 //
 
 #import "SUDSAVerifier.h"
+#import <Cocoa/Cocoa.h>
 
 #import <Security/cssm.h>
 

@@ -51,7 +51,6 @@
 		5D1AF58B0FD7678C0065DB48 /* libxar.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF5890FD7678C0065DB48 /* libxar.1.dylib */; };
 		5D1AF5900FD767AD0065DB48 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF58F0FD767AD0065DB48 /* libxml2.dylib */; };
 		5D1AF59A0FD767E50065DB48 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF5990FD767E50065DB48 /* libz.dylib */; };
-		5D1AF59C0FD768010065DB48 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF59B0FD768010065DB48 /* libcrypto.dylib */; };
 		5D1AF82B0FD768180065DB48 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1AF5990FD767E50065DB48 /* libz.dylib */; };
 		610134730DD250470049ACDF /* SUUpdateDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = 610134710DD250470049ACDF /* SUUpdateDriver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		610134740DD250470049ACDF /* SUUpdateDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 610134720DD250470049ACDF /* SUUpdateDriver.m */; };
@@ -263,7 +262,6 @@
 		5D1AF5890FD7678C0065DB48 /* libxar.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxar.1.dylib; path = /usr/lib/libxar.1.dylib; sourceTree = "<absolute>"; };
 		5D1AF58F0FD767AD0065DB48 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = /usr/lib/libxml2.dylib; sourceTree = "<absolute>"; };
 		5D1AF5990FD767E50065DB48 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
-		5D1AF59B0FD768010065DB48 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = /usr/lib/libcrypto.dylib; sourceTree = "<absolute>"; };
 		610134710DD250470049ACDF /* SUUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdateDriver.h; sourceTree = "<group>"; };
 		610134720DD250470049ACDF /* SUUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUUpdateDriver.m; sourceTree = "<group>"; };
 		610134790DD2541A0049ACDF /* SUProbingUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUProbingUpdateDriver.h; sourceTree = "<group>"; };
@@ -360,10 +358,18 @@
 		61B93B260DD0FDD300DCD2F8 /* SUAutomaticUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUAutomaticUpdateDriver.m; sourceTree = "<group>"; };
 		61B93C070DD112FF00DCD2F8 /* SUScheduledUpdateDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUScheduledUpdateDriver.h; sourceTree = "<group>"; };
 		61B93C080DD112FF00DCD2F8 /* SUScheduledUpdateDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUScheduledUpdateDriver.m; sourceTree = "<group>"; };
+		61BA66CC14BDFA0400D02D86 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/Sparkle.strings; sourceTree = "<group>"; };
+		61BA66DA14BDFC5500D02D86 /* sl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sl; path = sl.lproj/SUAutomaticUpdateAlert.xib; sourceTree = "<group>"; };
+		61BA66DB14BDFC5500D02D86 /* sl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sl; path = sl.lproj/SUUpdateAlert.xib; sourceTree = "<group>"; };
+		61BA66DC14BDFC5500D02D86 /* sl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sl; path = sl.lproj/SUUpdatePermissionPrompt.xib; sourceTree = "<group>"; };
 		61BBDF810A49220C00378739 /* Sparkle.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Sparkle.icns; sourceTree = "<group>"; };
 		61C268090E2DB5D000175E6C /* License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		61CFB3280E385186007A1735 /* Sparkle.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sparkle.pch; sourceTree = "<group>"; };
-		61E31A80103299500051D188 /* pt_BR */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/Sparkle.strings; sourceTree = "<group>"; };
+		61DEC1161477565C00931268 /* ro */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Sparkle.strings; sourceTree = "<group>"; };
+		61DEC1181477566800931268 /* ro */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ro; path = ro.lproj/SUUpdatePermissionPrompt.xib; sourceTree = "<group>"; };
+		61DEC11A1477567800931268 /* ro */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ro; path = ro.lproj/SUUpdateAlert.xib; sourceTree = "<group>"; };
+		61DEC11C1477568300931268 /* ro */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ro; path = ro.lproj/SUAutomaticUpdateAlert.xib; sourceTree = "<group>"; };
+		61E31A80103299500051D188 /* pt_BR */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/Sparkle.strings; sourceTree = "<group>"; };
 		61EF67550E25B58D00F754E0 /* SUHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUHost.m; sourceTree = "<group>"; };
 		61EF67580E25C5B400F754E0 /* SUHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUHost.h; sourceTree = "<group>"; };
 		61F614540E24A12D009F47E7 /* it */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Sparkle.strings; sourceTree = "<group>"; };
@@ -409,7 +415,6 @@
 				5D1AF58B0FD7678C0065DB48 /* libxar.1.dylib in Frameworks */,
 				5D1AF5900FD767AD0065DB48 /* libxml2.dylib in Frameworks */,
 				5D1AF59A0FD767E50065DB48 /* libz.dylib in Frameworks */,
-				5D1AF59C0FD768010065DB48 /* libcrypto.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,7 +497,6 @@
 				5D1AF58F0FD767AD0065DB48 /* libxml2.dylib */,
 				5D1AF5890FD7678C0065DB48 /* libxar.1.dylib */,
 				5D1AF5990FD767E50065DB48 /* libz.dylib */,
-				5D1AF59B0FD768010065DB48 /* libcrypto.dylib */,
 				525A278F133D6AE900FD8D70 /* Cocoa.framework */,
 				55C14F31136EFC2400649790 /* SystemConfiguration.framework */,
 			);
@@ -872,7 +876,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0420;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Sparkle" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -914,6 +918,8 @@
 				pt_BR,
 				pt_PT,
 				pt,
+				ro,
+				sl,
 			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* Sparkle */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
@@ -1185,6 +1191,8 @@
 				55C14BED136EF20D00649790 /* zh_TW */,
 				6158A1BA1378F68100487EC1 /* pt_PT */,
 				6158A1BE1378F8BB00487EC1 /* tr */,
+				61DEC11C1477568300931268 /* ro */,
+				61BA66DA14BDFC5500D02D86 /* sl */,
 			);
 			name = SUAutomaticUpdateAlert.xib;
 			sourceTree = "<group>";
@@ -1212,6 +1220,8 @@
 				55C14C03136EF26100649790 /* zh_TW */,
 				6158A1BB1378F68100487EC1 /* pt_PT */,
 				6158A1BF1378F8BB00487EC1 /* tr */,
+				61DEC11A1477567800931268 /* ro */,
+				61BA66DB14BDFC5500D02D86 /* sl */,
 			);
 			name = SUUpdateAlert.xib;
 			sourceTree = "<group>";
@@ -1239,6 +1249,8 @@
 				55C14C18136EF2C700649790 /* zh_TW */,
 				6158A1B81378F64700487EC1 /* pt_PT */,
 				6158A1C01378F8BB00487EC1 /* tr */,
+				61DEC1181477566800931268 /* ro */,
+				61BA66DC14BDFC5500D02D86 /* sl */,
 			);
 			name = SUUpdatePermissionPrompt.xib;
 			sourceTree = "<group>";
@@ -1264,6 +1276,8 @@
 				615409C4103BBC4000125AF1 /* cs */,
 				6186554310D7484E00B1E074 /* pt_PT */,
 				6160FD85134ABCD5007FFC5F /* tr */,
+				61DEC1161477565C00931268 /* ro */,
+				61BA66CC14BDFA0400D02D86 /* sl */,
 			);
 			name = Sparkle.strings;
 			sourceTree = "<group>";
@@ -1361,7 +1375,7 @@
 			};
 			name = Release;
 		};
-		55C14BBD136EEF1500649790 /* Release (GC dual-mode; 10.5-only) */ = {
+		55C14BBD136EEF1500649790 /* Release (GC dual-mode; 10.5+) */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA1941D40D94A70100DD942E /* ConfigRelaunchRelease.xcconfig */;
 			buildSettings = {
@@ -1379,7 +1393,7 @@
 				);
 				PRODUCT_NAME = finish_installation;
 			};
-			name = "Release (GC dual-mode; 10.5-only)";
+			name = "Release (GC dual-mode; 10.5+)";
 		};
 		5D06E8D20FD68C7D005AE3F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1395,42 +1409,42 @@
 			};
 			name = Release;
 		};
-		5D06E8D40FD68C7D005AE3F6 /* Release (GC dual-mode; 10.5-only) */ = {
+		5D06E8D40FD68C7D005AE3F6 /* Release (GC dual-mode; 10.5+) */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D06E8F30FD68D21005AE3F6 /* ConfigBinaryDeltaRelease.xcconfig */;
 			buildSettings = {
 			};
-			name = "Release (GC dual-mode; 10.5-only)";
+			name = "Release (GC dual-mode; 10.5+)";
 		};
-		61072EAD0DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */ = {
+		61072EAD0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
-			name = "Release (GC dual-mode; 10.5-only)";
+			name = "Release (GC dual-mode; 10.5+)";
 		};
-		61072EAE0DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */ = {
+		61072EAE0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61072EB20DF2640C008FE88B /* ConfigFrameworkReleaseGCSupport.xcconfig */;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = supported;
 				SDKROOT = macosx10.6;
 			};
-			name = "Release (GC dual-mode; 10.5-only)";
+			name = "Release (GC dual-mode; 10.5+)";
 		};
-		61072EAF0DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */ = {
+		61072EAF0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 615409A8103BA09100125AF1 /* ConfigTestAppReleaseGCSupport.xcconfig */;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = supported;
 			};
-			name = "Release (GC dual-mode; 10.5-only)";
+			name = "Release (GC dual-mode; 10.5+)";
 		};
-		61072EB10DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */ = {
+		61072EB10DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FA302AFD109D13190060F891 /* ConfigUnitTestReleaseGCSupport.xcconfig */;
 			buildSettings = {
 			};
-			name = "Release (GC dual-mode; 10.5-only)";
+			name = "Release (GC dual-mode; 10.5+)";
 		};
 		612279DB0DB5470300AB99EA /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1470,7 +1484,7 @@
 			buildConfigurations = (
 				1DEB91AE08733DA50010E9CD /* Debug */,
 				1DEB91AF08733DA50010E9CD /* Release */,
-				61072EAE0DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */,
+				61072EAE0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1480,7 +1494,7 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
-				61072EAD0DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */,
+				61072EAD0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1490,7 +1504,7 @@
 			buildConfigurations = (
 				55C14BBB136EEF1500649790 /* Debug */,
 				55C14BBC136EEF1500649790 /* Release */,
-				55C14BBD136EEF1500649790 /* Release (GC dual-mode; 10.5-only) */,
+				55C14BBD136EEF1500649790 /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1500,7 +1514,7 @@
 			buildConfigurations = (
 				5D06E8D20FD68C7D005AE3F6 /* Debug */,
 				5D06E8D30FD68C7D005AE3F6 /* Release */,
-				5D06E8D40FD68C7D005AE3F6 /* Release (GC dual-mode; 10.5-only) */,
+				5D06E8D40FD68C7D005AE3F6 /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1510,7 +1524,7 @@
 			buildConfigurations = (
 				612279DB0DB5470300AB99EA /* Debug */,
 				612279DC0DB5470300AB99EA /* Release */,
-				61072EB10DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */,
+				61072EB10DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1520,7 +1534,7 @@
 			buildConfigurations = (
 				61B5F90609C4CEE300B25A18 /* Debug */,
 				61B5F90709C4CEE300B25A18 /* Release */,
-				61072EAF0DF263BD008FE88B /* Release (GC dual-mode; 10.5-only) */,
+				61072EAF0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
