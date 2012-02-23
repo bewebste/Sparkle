@@ -20,7 +20,7 @@
 #import "SUBinaryDeltaCommon.h"
 #import "SUUpdater_Private.h"
 
-@interface SUBasicUpdateDriver () <NSURLDownloadDelegate>; @end
+@interface SUBasicUpdateDriver () /*<NSURLDownloadDelegate>*/; @end
 
 
 @implementation SUBasicUpdateDriver
