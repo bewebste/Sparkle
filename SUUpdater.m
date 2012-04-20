@@ -31,8 +31,8 @@
 - (void)updateDriverDidFinish:(NSNotification *)note;
 - (NSURL *)parameterizedFeedURL;
 
--(void)	notifyWillShowAlert;
--(void)	notifyDidShowAlert;
+-(void)	notifyWillShowModalAlert;
+-(void)	notifyDidShowModalAlert;
 
 @end
 
@@ -485,6 +485,8 @@ static NSString * const SUUpdaterDefaultsObservationContext = @"SUUpdaterDefault
 {
 	NSURL *baseFeedURL = [self feedURL];
 	
+	if ([[baseFeedURL scheme] isEqualToString:@"file"])
+		return baseFeedURL; //Don't append profile info if we're using a file URL, e.g. for debugging
 	NSArray *parameters = [self feedParameters];
 	if ([parameters count] == 0) { return baseFeedURL; }
 	

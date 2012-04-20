@@ -68,9 +68,33 @@
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		// On 10.6 and later we don't want to use the File Manager API and instead want to use NSFileManager (fixes #827357).
 		NSFileManager *manager = [[[NSFileManager alloc] init] autorelease];
-		if (![manager copyItemAtPath:mountPoint toPath:[archivePath stringByDeletingLastPathComponent] error:NULL]) {
-			goto reportError;
-		}
+        NSError *error = nil;
+        NSArray *contents = [manager contentsOfDirectoryAtPath:mountPoint error:&error];
+        if (error)
+        {
+            SULog(@"Couldn't enumerate contents of archive mounted at %@: %@", mountPoint, error);
+            goto reportError;
+        }
+        
+        NSEnumerator *contentsEnumerator = [contents objectEnumerator];
+        NSString *item;
+        while ((item = [contentsEnumerator nextObject]))
+        {
+            NSString *fromPath = [mountPoint stringByAppendingPathComponent:item];
+            NSString *toPath = [[archivePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:item];
+            
+            // We skip any files in the DMG which are not readable.
+            if (![manager isReadableFileAtPath:fromPath])
+                continue;
+            
+            SULog(@"copyItemAtPath:%@ toPath:%@", fromPath, toPath);
+            
+            if (![manager copyItemAtPath:fromPath toPath:toPath error:&error])
+            {
+                SULog(@"Couldn't copy item: %@", error);
+                goto reportError;
+            }
+        }
 	}
 	else {
 		FSRef srcRef, dstRef;

@@ -15,16 +15,16 @@
 // -----------------------------------------------------------------------------
 
 // Turn off DSA signature check (practically invites man-in-the-middle attacks):
-#define ENDANGER_USERS_WITH_INSECURE_UPDATES		1
+#define ENDANGER_USERS_WITH_INSECURE_UPDATES		0
 
 // Sparkle usually doesn't allow downgrades as they're usually accidental, but
 //	if your app has a downgrade function or URL handler, turn this on:
-#define PERMIT_AUTOMATED_DOWNGRADES					1
+#define PERMIT_AUTOMATED_DOWNGRADES					0
 
 // If your app file on disk is named "MyApp 1.1b4", Sparkle usually updates it
 //	in place, giving you an app named 1.1b4 that is actually 1.2. Turn the
 //	following on to always reset the name back to "MyApp":
-#define NORMALIZE_INSTALLED_APP_NAME				1
+#define NORMALIZE_INSTALLED_APP_NAME				0
 
 
 #define TRY_TO_APPEND_VERSION_NUMBER				1
@@ -59,6 +59,7 @@ extern NSString *const SULastProfileSubmitDateKey;
 extern NSString *const SUPromptUserOnFirstLaunchKey;
 extern NSString *const SUFixedHTMLDisplaySizeKey;
 extern NSString *const SUKeepDownloadOnFailedInstallKey;
+extern NSString *const SUDefaultsDomainKey;
 
 // -----------------------------------------------------------------------------
 //	Errors:
