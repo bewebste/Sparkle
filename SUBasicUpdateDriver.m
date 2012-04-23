@@ -87,11 +87,13 @@
 		[[updater delegate] updater:updater didFinishLoadingAppcast:ac];
     
     SUAppcastItem *item = nil;
+	BOOL customUpdateSelectionUsed = NO;
     
 	// Now we have to find the best valid update in the appcast.
 	if ([[updater delegate] respondsToSelector:@selector(bestValidUpdateInAppcast:forUpdater:)]) // Does the delegate want to handle it?
 	{
 		item = [[updater delegate] bestValidUpdateInAppcast:ac forUpdater:updater];
+		customUpdateSelectionUsed = YES;
 	}
 	else // If not, we'll take care of it ourselves.
 	{
@@ -114,7 +116,7 @@
 	if (ac) { CFRelease(ac); } // Remember that we're explicitly managing the memory of the appcast.
 	if (updateItem == nil) { [self didNotFindUpdate]; return; }
 	
-	if ([self itemContainsValidUpdate:updateItem])
+	if (customUpdateSelectionUsed || [self itemContainsValidUpdate:updateItem])
 		[self didFindValidUpdate];
 	else
 		[self didNotFindUpdate];
