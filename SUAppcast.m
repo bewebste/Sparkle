@@ -32,7 +32,7 @@
 }
 @end
 
-@interface SUAppcast () /*<NSURLDownloadDelegate>*/
+@interface SUAppcast () <NSURLDownloadDelegate>
 - (void)reportError:(NSError *)error;
 - (NSXMLNode *)bestNodeInNodes:(NSArray *)nodes;
 @end

@@ -58,6 +58,9 @@ void	SUClearLog( void )
 
 void	SULog( NSString* format, ... )
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+
 	va_list ap;
 	va_start(ap, format);
 	NSString*	theStr = [[[NSString alloc] initWithFormat: format arguments: ap] autorelease];
@@ -75,6 +78,7 @@ void	SULog( NSString* format, ... )
 		logfile = NULL;
 	}
 	va_end(ap);
+#pragma clang diagnostic pop
 }
 
 
