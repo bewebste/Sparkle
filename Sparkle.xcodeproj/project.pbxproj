@@ -1542,6 +1542,88 @@
 			};
 			name = Release;
 		};
+		DDD2046E15B796960013566C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Beta;
+		};
+		DDD2046F15B796960013566C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA1941D50D94A70100DD942E /* ConfigFrameworkRelease.xcconfig */;
+			buildSettings = {
+				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
+				IBC_NOTICES = NO;
+				IBC_WARNINGS = NO;
+				SDKROOT = macosx10.7;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wno-unused-parameter",
+					"-Wundef",
+					"-Wendif-labels",
+					"-Wpointer-arith",
+					"-Wcast-align",
+					"-Wwrite-strings",
+					"-Wmissing-format-attribute",
+					"-Wpacked",
+					"-Wredundant-decls",
+					"-Winline",
+					"-Wdisabled-optimization",
+					"-Wformat=2",
+					"-Winvalid-pch",
+				);
+			};
+			name = Beta;
+		};
+		DDD2047015B796960013566C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA1941D20D94A70100DD942E /* ConfigTestAppRelease.xcconfig */;
+			buildSettings = {
+				GCC_ENABLE_OBJC_GC = supported;
+			};
+			name = Beta;
+		};
+		DDD2047115B796960013566C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA3AAF391050B273004B3130 /* ConfigUnitTestRelease.xcconfig */;
+			buildSettings = {
+			};
+			name = Beta;
+		};
+		DDD2047215B796960013566C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D06E8F30FD68D21005AE3F6 /* ConfigBinaryDeltaRelease.xcconfig */;
+			buildSettings = {
+			};
+			name = Beta;
+		};
+		DDD2047315B796960013566C /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA1941D40D94A70100DD942E /* ConfigRelaunchRelease.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = finish_installation.pch;
+				INFOPLIST_FILE = "finish_installation-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PRODUCT_NAME = finish_installation;
+				SDKROOT = macosx10.7;
+				ZERO_LINK = NO;
+			};
+			name = Beta;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1550,6 +1632,7 @@
 			buildConfigurations = (
 				1DEB91AE08733DA50010E9CD /* Debug */,
 				1DEB91AF08733DA50010E9CD /* Release */,
+				DDD2046F15B796960013566C /* Beta */,
 				61072EAE0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1560,6 +1643,7 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+				DDD2046E15B796960013566C /* Beta */,
 				61072EAD0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1570,6 +1654,7 @@
 			buildConfigurations = (
 				55C14BBB136EEF1500649790 /* Debug */,
 				55C14BBC136EEF1500649790 /* Release */,
+				DDD2047315B796960013566C /* Beta */,
 				55C14BBD136EEF1500649790 /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1580,6 +1665,7 @@
 			buildConfigurations = (
 				5D06E8D20FD68C7D005AE3F6 /* Debug */,
 				5D06E8D30FD68C7D005AE3F6 /* Release */,
+				DDD2047215B796960013566C /* Beta */,
 				5D06E8D40FD68C7D005AE3F6 /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1590,6 +1676,7 @@
 			buildConfigurations = (
 				612279DB0DB5470300AB99EA /* Debug */,
 				612279DC0DB5470300AB99EA /* Release */,
+				DDD2047115B796960013566C /* Beta */,
 				61072EB10DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1600,6 +1687,7 @@
 			buildConfigurations = (
 				61B5F90609C4CEE300B25A18 /* Debug */,
 				61B5F90709C4CEE300B25A18 /* Release */,
+				DDD2047015B796960013566C /* Beta */,
 				61072EAF0DF263BD008FE88B /* Release (GC dual-mode; 10.5+) */,
 			);
 			defaultConfigurationIsVisible = 0;
