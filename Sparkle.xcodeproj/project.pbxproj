@@ -1310,7 +1310,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				IBC_NOTICES = NO;
 				IBC_WARNINGS = NO;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unused-parameter",
@@ -1340,7 +1340,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				IBC_NOTICES = NO;
 				IBC_WARNINGS = NO;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unused-parameter",
@@ -1392,7 +1392,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
@@ -1415,7 +1415,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1437,7 +1437,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 			};
 			name = "Release (GC dual-mode; 10.5+)";
 		};
@@ -1477,7 +1477,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				IBC_NOTICES = NO;
 				IBC_WARNINGS = NO;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unused-parameter",
