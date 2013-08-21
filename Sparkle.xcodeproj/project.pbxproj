@@ -1558,7 +1558,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = NO;
 				IBC_NOTICES = NO;
 				IBC_WARNINGS = NO;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wno-unused-parameter",
@@ -1619,7 +1619,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				ZERO_LINK = NO;
 			};
 			name = Beta;
