@@ -187,9 +187,12 @@
 
 - (void)abortUpdateWithError:(NSError *)error
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-security"
 	NSAlert *alert = [NSAlert alertWithMessageText:SULocalizedString(@"Update Error!", nil) defaultButton:SULocalizedString(@"Cancel Update", nil) alternateButton:nil otherButton:nil informativeTextWithFormat:[error localizedDescription]];
 	[self showModalAlert:alert];
 	[super abortUpdateWithError:error];
+#pragma clang diagnostic pop
 }
 
 - (void)abortUpdate
