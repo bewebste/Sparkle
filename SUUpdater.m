@@ -293,6 +293,13 @@ static NSString * const SUUpdaterDefaultsObservationContext = @"SUUpdaterDefault
 	return( !delegate || ![delegate respondsToSelector: @selector(updaterShouldRelaunchApplication:)] || [delegate updaterShouldRelaunchApplication: self] );
 }
 
+- (void)saveLastUpdateCheckDate
+{
+	[self willChangeValueForKey:@"lastUpdateCheckDate"];
+	[host setObject:[NSDate date] forUserDefaultsKey:SULastCheckTimeKey];
+	[self didChangeValueForKey:@"lastUpdateCheckDate"];
+}
+
 - (IBAction)checkForUpdates: (id)sender
 {
 	[self checkForUpdatesWithDriver:[[[SUUserInitiatedUpdateDriver alloc] initWithUpdater:self] autorelease]];
@@ -311,9 +318,7 @@ static NSString * const SUUpdaterDefaultsObservationContext = @"SUUpdaterDefault
 	SUClearLog();
 	SULog( @"===== %@ =====", [[NSFileManager defaultManager] displayNameAtPath: [[NSBundle mainBundle] bundlePath]] );
 		
-	[self willChangeValueForKey:@"lastUpdateCheckDate"];
-	[host setObject:[NSDate date] forUserDefaultsKey:SULastCheckTimeKey];
-	[self didChangeValueForKey:@"lastUpdateCheckDate"];
+	[self saveLastUpdateCheckDate];
 	
     if( [delegate respondsToSelector: @selector(updaterMayCheckForUpdates:)] && ![delegate updaterMayCheckForUpdates: self] )
 	{

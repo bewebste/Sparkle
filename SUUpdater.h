@@ -73,6 +73,8 @@
 // Call this to appropriately schedule or cancel the update checking timer according to the preferences for time interval and automatic checks. This call does not change the date of the next check, but only the internal NSTimer.
 - (void)resetUpdateCycle;
 
+- (void)saveLastUpdateCheckDate;
+
 - (BOOL)updateInProgress;
 
 @end
