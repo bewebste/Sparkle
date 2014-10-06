@@ -853,7 +853,7 @@
 			name = "Sparkle Unit Tests";
 			productName = "Sparkle Unit Tests";
 			productReference = 612279D90DB5470200AB99EA /* Sparkle Unit Tests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		61B5F90109C4CEE200B25A18 /* Sparkle Test App */ = {
 			isa = PBXNativeTarget;
@@ -1406,7 +1406,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.9;
 			};
 			name = Debug;
 		};
@@ -1430,7 +1430,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.9;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1556,7 +1556,7 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx10.9;
 				ZERO_LINK = NO;
 			};
 			name = Beta;
