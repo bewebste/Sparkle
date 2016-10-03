@@ -903,7 +903,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0730;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Sparkle" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1376,12 +1376,14 @@
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -1406,7 +1408,6 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.9;
 			};
 			name = Debug;
 		};
@@ -1430,7 +1431,6 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.9;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1484,6 +1484,7 @@
 		DDD2046E15B796960013566C /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SDKROOT = macosx;
 			};
 			name = Beta;
 		};
@@ -1556,7 +1557,6 @@
 					AppKit,
 				);
 				PRODUCT_NAME = finish_installation;
-				SDKROOT = macosx10.9;
 				ZERO_LINK = NO;
 			};
 			name = Beta;
