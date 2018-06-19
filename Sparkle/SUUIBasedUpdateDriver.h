@@ -11,6 +11,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "SUBasicUpdateDriver.h"
+#import "SUUpdateAlert.h"
 
 @class SUStatusController;
 
@@ -20,6 +21,9 @@
 - (void)showAlert:(NSAlert *)alert;
 - (IBAction)cancelDownload:(id)sender;
 - (void)installAndRestart:(id)sender;
+
+
+- (void)updateAlertFinishedWithChoice:(SUUpdateAlertChoice)choice;
 
 @end
 

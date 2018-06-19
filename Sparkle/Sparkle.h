@@ -30,4 +30,9 @@
 #import "SPUURLRequest.h"
 #import "SUCodeSigningVerifier.h"
 
+//bwebster custom headers needed
+#import "SUUpdaterPrivate.h"
+#import "SUUIBasedUpdateDriver.h"
+#import "SUScheduledUpdateDriver.h"
+
 #endif
