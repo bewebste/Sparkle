@@ -14,6 +14,7 @@
 #import "SPUDownloaderDelegate.h"
 
 @class SUAppcast, SUAppcastItem, SUHost, SPUDownloadData;
+__attribute__((visibility("default")))
 @interface SUBasicUpdateDriver : SUUpdateDriver <SPUDownloaderDelegate>
 
 @property (strong, readonly) SUAppcastItem *updateItem;

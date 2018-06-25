@@ -15,6 +15,7 @@
 
 @class SUStatusController;
 
+__attribute__((visibility("default")))
 @interface SUUIBasedUpdateDriver : SUBasicUpdateDriver
 @property (assign) BOOL showErrors;
 

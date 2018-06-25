@@ -11,6 +11,7 @@
 
 #import "SUUIBasedUpdateDriver.h"
 
+__attribute__((visibility("default")))
 @interface SUScheduledUpdateDriver : SUUIBasedUpdateDriver
 
 @end
