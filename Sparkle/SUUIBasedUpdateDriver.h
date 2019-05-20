@@ -22,6 +22,7 @@ __attribute__((visibility("default")))
 - (void)showAlert:(NSAlert *)alert;
 - (IBAction)cancelDownload:(id)sender;
 - (void)installAndRestart:(id)sender;
+- (BOOL)shouldShowUpdateAlertForItem:(SUAppcastItem *)item;
 
 
 - (void)updateAlertFinishedWithChoice:(SUUpdateAlertChoice)choice;
