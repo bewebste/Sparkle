@@ -25,7 +25,7 @@ __attribute__((visibility("default")))
 - (BOOL)shouldShowUpdateAlertForItem:(SUAppcastItem *)item;
 
 
-- (void)updateAlertFinishedWithChoice:(SUUpdateAlertChoice)choice;
+- (void)updateAlertFinishedWithChoice:(SUUpdateAlertChoice)choice forItem:(SUAppcastItem *)item;
 
 @end
 
