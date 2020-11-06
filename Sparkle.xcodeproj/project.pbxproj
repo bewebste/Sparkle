@@ -957,6 +957,7 @@
 		A5BF4F1B1BC7668B007A052A /* SUTestWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUTestWebServer.h; sourceTree = "<group>"; };
 		A5BF4F1C1BC7668B007A052A /* SUTestWebServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUTestWebServer.m; sourceTree = "<group>"; };
 		C23E88591BE7AF890050BB73 /* SparkleTestCodeSignApp.enc.dmg */ = {isa = PBXFileReference; lastKnownFileType = file; path = SparkleTestCodeSignApp.enc.dmg; sourceTree = "<group>"; };
+		DDFB879C2555F8C900A11C23 /* ConfigCommonBeta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ConfigCommonBeta.xcconfig; sourceTree = "<group>"; };
 		E1545EC31E1D7E0200FAECE8 /* SUTouchBarButtonGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUTouchBarButtonGroup.h; sourceTree = "<group>"; };
 		E1545EC41E1D7E0200FAECE8 /* SUTouchBarButtonGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUTouchBarButtonGroup.m; sourceTree = "<group>"; };
 		E19CA4901E2E7E4D009D4D18 /* SUTouchBarForwardDeclarations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUTouchBarForwardDeclarations.h; sourceTree = "<group>"; };
@@ -1613,6 +1614,7 @@
 				FA1941D00D94A70100DD942E /* ConfigCommon.xcconfig */,
 				149B78631B7D3A0C00D7D62C /* ConfigCommonCoverage.xcconfig */,
 				FA1941CF0D94A70100DD942E /* ConfigCommonDebug.xcconfig */,
+				DDFB879C2555F8C900A11C23 /* ConfigCommonBeta.xcconfig */,
 				FA1941CC0D94A70100DD942E /* ConfigCommonRelease.xcconfig */,
 				722954C81D04E89500ECF9CA /* ConfigFileop.xcconfig */,
 				FA1941D10D94A70100DD942E /* ConfigFramework.xcconfig */,
@@ -3118,7 +3120,7 @@
 		};
 		DD7EE1FF234D3FC300652641 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA1941CF0D94A70100DD942E /* ConfigCommonDebug.xcconfig */;
+			baseConfigurationReference = DDFB879C2555F8C900A11C23 /* ConfigCommonBeta.xcconfig */;
 			buildSettings = {
 			};
 			name = Beta;
