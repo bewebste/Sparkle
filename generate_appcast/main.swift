@@ -9,7 +9,7 @@
 import Foundation
 import ArgumentParser
 
-func loadPrivateKeys(_ privateDSAKey: SecKey?, _ privateEdString: String?) -> PrivateKeys {
+func loadPrivateKeys(_ account: String, _ privateDSAKey: SecKey?, _ privateEdString: String?) -> PrivateKeys {
     var privateEdKey: Data?
     var publicEdKey: Data?
     var item: CFTypeRef?
@@ -28,14 +28,14 @@ func loadPrivateKeys(_ privateDSAKey: SecKey?, _ privateEdString: String?) -> Pr
         let res = SecItemCopyMatching([
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: "https://sparkle-project.org",
-            kSecAttrAccount as String: "ed25519",
+            kSecAttrAccount as String: account,
             kSecAttrProtocol as String: kSecAttrProtocolSSH,
             kSecReturnData as String: kCFBooleanTrue!,
         ] as CFDictionary, &item)
         if res == errSecSuccess, let encoded = item as? Data, let data = Data(base64Encoded: encoded) {
             keys = data
         } else {
-            print("Warning: Private key not found in the Keychain (\(res)). Please run the generate_keys tool")
+            print("Warning: Private key for account \(account) not found in the Keychain (\(res)). Please run the generate_keys tool")
         }
     }
 
@@ -46,6 +46,8 @@ func loadPrivateKeys(_ privateDSAKey: SecKey?, _ privateEdString: String?) -> Pr
     return PrivateKeys(privateDSAKey: privateDSAKey, privateEdKey: privateEdKey, publicEdKey: publicEdKey)
 }
 
+let DEFAULT_MAX_CDATA_THRESHOLD = 1000
+
 struct GenerateAppcast: ParsableCommand {
     static let programName = "generate_appcast"
     static let programNamePath: String = CommandLine.arguments.first ?? "./\(programName)"
@@ -53,6 +55,9 @@ struct GenerateAppcast: ParsableCommand {
     
     static let DEFAULT_MAX_NEW_VERSIONS_IN_FEED = 5
     static let DEFAULT_MAXIMUM_DELTAS = 5
+    
+    @Option(help: ArgumentHelp("The account name in your keychain associated with your private EdDSA (ed25519) key to use for signing new updates."))
+    var account : String = "ed25519"
     
     @Option(name: .customShort("s"), help: ArgumentHelp("The private EdDSA string (128 characters). If not specified, the private EdDSA key will be read from the Keychain instead.", valueName: "private-EdDSA-key"))
     var privateEdString : String?
@@ -84,6 +89,12 @@ struct GenerateAppcast: ParsableCommand {
     @Option(name: .long, help: ArgumentHelp("The maximum number of delta items to create for the latest update for each minimum required operating system.", valueName: "maximum-deltas"))
     var maximumDeltas: Int = DEFAULT_MAXIMUM_DELTAS
     
+    @Option(name: .long, help: ArgumentHelp(COMPRESSION_METHOD_ARGUMENT_DESCRIPTION, valueName: "delta-compression"))
+    var deltaCompression: String = "default"
+    
+    @Option(name: .long, help: ArgumentHelp(COMPRESSION_LEVEL_ARGUMENT_DESCRIPTION, valueName: "delta-compression-level"))
+    var deltaCompressionLevel: UInt8 = 0
+    
     @Option(name: .long, help: ArgumentHelp("The Sparkle channel name that will be used for generating new updates. By default, no channel is used. Old applications need to be using Sparkle 2 to use this feature.", valueName: "channel-name"))
     var channel: String?
     
@@ -114,6 +125,13 @@ struct GenerateAppcast: ParsableCommand {
     @Flag(help: .hidden)
     var verbose: Bool = false
     
+    // CDATA text must contain <= this number of characters
+    @Option(name: .customLong("max-cdata-threshold"), help: .hidden)
+    var maxCDATAThreshold: Int = DEFAULT_MAX_CDATA_THRESHOLD
+    
+    @Flag(name: .customLong("disable-nested-code-check"), help: .hidden)
+    var disableNestedCodeCheck: Bool = false
+    
     static var configuration = CommandConfiguration(
         abstract: "Generate appcast from a directory of Sparkle update archives.",
         discussion: """
@@ -123,7 +141,7 @@ struct GenerateAppcast: ParsableCommand {
         Old entries in the appcast are kept intact. Otherwise, a new appcast file will be generated and written.
         
         .html files that have the same filename as an archive (except for the file extension) will be used for release notes for that item.
-        If the contents of these files are short (< \(CDATA_HTML_FRAGMENT_THRESHOLD) characters) and do not include a DOCTYPE or body tags, they will be treated as embedded CDATA release notes.
+        If the contents of these files are short (< \(DEFAULT_MAX_CDATA_THRESHOLD) characters) and do not include a DOCTYPE or body tags, they will be treated as embedded CDATA release notes.
         
         For new update entries, Sparkle infers the minimum system OS requirement based on your update's LSMinimumSystemVersion provided
         by your application's Info.plist. If none is found, \(programName) defaults to Sparkle's own minimum system requirement (macOS 10.11).
@@ -166,6 +184,16 @@ struct GenerateAppcast: ParsableCommand {
         guard (informationalUpdateVersions == nil) || (link != nil) else {
             throw ValidationError("--link must be specified if --informational-update-versions is specified.")
         }
+        
+        guard deltaCompressionLevel >= 0 && deltaCompressionLevel <= 9 else {
+            throw ValidationError("Invalid --delta-compression-level value was passed.")
+        }
+        
+        var validCompression: ObjCBool = false
+        let _ = deltaCompressionModeFromDescription(deltaCompression, &validCompression)
+        if !validCompression.boolValue {
+            throw ValidationError("Invalid --delta-compression \(deltaCompression) was passed.")
+        }
     }
     
     func run() throws {
@@ -189,10 +217,10 @@ struct GenerateAppcast: ParsableCommand {
             privateDSAKey = nil
         }
         
-        let keys = loadPrivateKeys(privateDSAKey, privateEdString)
+        let keys = loadPrivateKeys(account, privateDSAKey, privateEdString)
         
         do {
-            let allUpdates = try makeAppcast(archivesSourceDir: archivesSourceDir, cacheDirectory: GenerateAppcast.cacheDirectory, keys: keys, versions: versions, maximumDeltas: maximumDeltas, verbose: verbose)
+            let allUpdates = try makeAppcast(archivesSourceDir: archivesSourceDir, cacheDirectory: GenerateAppcast.cacheDirectory, keys: keys, versions: versions, maximumDeltas: maximumDeltas, deltaCompressionModeDescription: deltaCompression, deltaCompressionLevel: deltaCompressionLevel, disableNestedCodeCheck: disableNestedCodeCheck, verbose: verbose)
             
             // If a URL prefix was provided, set on the archive items
             if downloadURLPrefix != nil || releaseNotesURLPrefix != nil {
@@ -223,7 +251,7 @@ struct GenerateAppcast: ParsableCommand {
                                                                 relativeTo: archivesSourceDir)
 
                 // Write the appcast
-                let (numNewUpdates, numExistingUpdates) = try writeAppcast(appcastDestPath: appcastDestPath, updates: updates, newVersions: versions, maxNewVersionsInFeed: maxNewVersionsInFeed, fullReleaseNotesLink: fullReleaseNotesURL, link: link, newChannel: channel, majorVersion: majorVersion, phasedRolloutInterval: phasedRolloutInterval, criticalUpdateVersion: criticalUpdateVersion, informationalUpdateVersions: informationalUpdateVersions)
+                let (numNewUpdates, numExistingUpdates) = try writeAppcast(appcastDestPath: appcastDestPath, updates: updates, newVersions: versions, maxNewVersionsInFeed: maxNewVersionsInFeed, fullReleaseNotesLink: fullReleaseNotesURL, maxCDATAThreshold: maxCDATAThreshold, link: link, newChannel: channel, majorVersion: majorVersion, phasedRolloutInterval: phasedRolloutInterval, criticalUpdateVersion: criticalUpdateVersion, informationalUpdateVersions: informationalUpdateVersions)
 
                 // Inform the user, pluralizing "update" if necessary
                 let pluralizeUpdates = { $0 == 1 ? "update" : "updates" }
