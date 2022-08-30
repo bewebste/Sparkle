@@ -440,6 +440,16 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
         if (![key length]) {
             continue;
         }
+        
+        if ([key isEqualToString:CUSTOM_ICON_PATH]) {
+            if (verbose) {
+                fprintf(stderr, "\n");
+            }
+            if (error != NULL) {
+                *error = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Diffing bundles with a custom icon set via a resource fork is not supported. Detected presence of %@", @(ent->fts_path)] }];
+            }
+            return NO;
+        }
 
         NSDictionary *info = infoForFile(ent);
         if (!info) {
@@ -453,6 +463,20 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
         }
         originalTreeState[key] = info;
 
+        // Ensure Sparkle executable permissions are valid
+        if (ent->fts_info == FTS_F && [key.lastPathComponent isEqualToString:@"Sparkle"] && [key.stringByDeletingLastPathComponent.stringByDeletingLastPathComponent.stringByDeletingLastPathComponent.lastPathComponent isEqualToString:@"Sparkle.framework"]) {
+            mode_t permissions = (mode_t)[(NSNumber *)info[INFO_PERMISSIONS_KEY] shortValue];
+            if (permissions != VALID_SPARKLE_EXECUTABLE_PERMISSIONS) {
+                if (verbose) {
+                    fprintf(stderr, "\n");
+                }
+                if (error != NULL) {
+                    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Permissions for Sparkle executable must be 0%o (found 0%o) on file %@", VALID_SPARKLE_EXECUTABLE_PERMISSIONS, permissions, @(ent->fts_path)] }];
+                }
+                return NO;
+            }
+        }
+        
         if (aclExists(ent)) {
             if (verbose) {
                 fprintf(stderr, "\n");
@@ -517,6 +541,8 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
         }
         return NO;
     }
+    
+    bool foundFilesystemCompression = false;
 
     uint32_t warningsCount = 0;
     const uint32_t maxWarningsToPrint = 16;
@@ -528,6 +554,16 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
         NSString *key = pathRelativeToDirectory(destination, stringWithFileSystemRepresentation(ent->fts_path));
         if (![key length]) {
             continue;
+        }
+        
+        if ([key isEqualToString:CUSTOM_ICON_PATH]) {
+            if (verbose) {
+                fprintf(stderr, "\n");
+            }
+            if (error != NULL) {
+                *error = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Diffing bundles with a custom icon set via a resource fork is not supported. Detected presence of %@", @(ent->fts_path)] }];
+            }
+            return NO;
         }
 
         NSDictionary *info = infoForFile(ent);
@@ -541,6 +577,20 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
             return NO;
         }
 
+        // Ensure Sparkle executable permissions are valid
+        if (ent->fts_info == FTS_F && [key.lastPathComponent isEqualToString:@"Sparkle"] && [key.stringByDeletingLastPathComponent.stringByDeletingLastPathComponent.stringByDeletingLastPathComponent.lastPathComponent isEqualToString:@"Sparkle.framework"]) {
+            mode_t permissions = (mode_t)[(NSNumber *)info[INFO_PERMISSIONS_KEY] shortValue];
+            if (permissions != VALID_SPARKLE_EXECUTABLE_PERMISSIONS) {
+                if (verbose) {
+                    fprintf(stderr, "\n");
+                }
+                if (error != NULL) {
+                    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFileReadUnknownError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Permissions for Sparkle executable must be 0%o (found 0%o) on file %@", VALID_SPARKLE_EXECUTABLE_PERMISSIONS, permissions, @(ent->fts_path)] }];
+                }
+                return NO;
+            }
+        }
+        
         // We should validate ACLs even if we don't store the info in the diff in the case of ACLs
         // We should also not allow files with code signed extended attributes since Apple doesn't recommend inserting these
         // inside an application, and since we don't preserve extended attribitutes anyway
@@ -582,6 +632,17 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
             
             if (warningsCount == maxWarningsToPrint) {
                 fprintf(stderr, "\nWarning: encountered too many warnings.. Ignoring the rest..");
+            }
+        }
+        
+        // If we find any executable files that are using file system compression, that is sufficient
+        // for recording that the applier should re-apply file system compression.
+        // We check for executable files because they are likely candidates to be compressed.
+        if (!foundFilesystemCompression && MAJOR_VERSION_IS_AT_LEAST(majorVersion, SUBinaryDeltaMajorVersion3) && ent->fts_info == FTS_F && (ent->fts_statp->st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)) != 0 && (ent->fts_statp->st_flags & UF_COMPRESSED) != 0) {
+            foundFilesystemCompression = true;
+            
+            if (verbose) {
+                fprintf(stderr, " File system compression detected.");
             }
         }
 
@@ -646,7 +707,7 @@ BOOL createBinaryDelta(NSString *source, NSString *destination, NSString *patchF
         archive = [[SPUXarDeltaArchive alloc] initWithPatchFileForWriting:temporaryFile];
     }
     
-    SPUDeltaArchiveHeader *header = [[SPUDeltaArchiveHeader alloc] initWithCompression:compression compressionLevel:compressionLevel majorVersion:majorVersion minorVersion:minorVersion beforeTreeHash:beforeHash afterTreeHash:afterHash];
+    SPUDeltaArchiveHeader *header = [[SPUDeltaArchiveHeader alloc] initWithCompression:compression compressionLevel:compressionLevel fileSystemCompression:foundFilesystemCompression majorVersion:majorVersion minorVersion:minorVersion beforeTreeHash:beforeHash afterTreeHash:afterHash];
     
     [archive writeHeader:header];
     if (archive.error != nil) {

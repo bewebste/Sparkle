@@ -38,6 +38,7 @@ NSString *const SURelaunchHostBundleKey = @"SURelaunchHostBundle";
 NSString *const SUShowReleaseNotesKey = @"SUShowReleaseNotes";
 NSString *const SUSkippedMinorVersionKey = @"SUSkippedVersion";
 NSString *const SUSkippedMajorVersionKey = @"SUSkippedMajorVersion";
+NSString *const SUSkippedMajorSubreleaseVersionKey = @"SUSkippedMajorSubreleaseVersion";
 NSString *const SUScheduledCheckIntervalKey = @"SUScheduledCheckInterval";
 NSString *const SULastCheckTimeKey = @"SULastCheckTime";
 NSString *const SUExpectsDSASignatureKey = @"SUExpectsDSASignature";
@@ -71,6 +72,8 @@ NSString *const SUNormalizeInstalledApplicationNameKey = @"SUNormalizeInstalledA
 NSString *const SURelaunchToolNameKey = @"SURelaunchToolName";
 
 NSString *const SUAppcastAttributeDeltaFrom = @"sparkle:deltaFrom";
+NSString *const SUAppcastAttributeDeltaFromSparkleExecutableSize = @"sparkle:deltaFromSparkleExecutableSize";
+NSString *const SUAppcastAttributeDeltaFromSparkleLocales = @"sparkle:deltaFromSparkleLocales";
 NSString *const SUAppcastAttributeDSASignature = @"sparkle:dsaSignature";
 NSString *const SUAppcastAttributeEDSignature = @"sparkle:edSignature";
 NSString *const SUAppcastAttributeShortVersionString = @"sparkle:shortVersionString";
@@ -91,6 +94,8 @@ NSString *const SUAppcastElementTags = @"sparkle:tags";
 NSString *const SUAppcastElementPhasedRolloutInterval = @"sparkle:phasedRolloutInterval";
 NSString *const SUAppcastElementInformationalUpdate = @"sparkle:informationalUpdate";
 NSString *const SUAppcastElementChannel = @"sparkle:channel";
+NSString *const SUAppcastElementBelowVersion = @"sparkle:belowVersion";
+NSString *const SUAppcastElementIgnoreSkippedUpgradesBelowVersion = @"sparkle:ignoreSkippedUpgradesBelowVersion";
 
 NSString *const SURSSAttributeURL = @"url";
 NSString *const SURSSAttributeLength = @"length";

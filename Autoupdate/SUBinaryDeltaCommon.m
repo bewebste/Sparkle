@@ -16,6 +16,7 @@
 #include <sys/mman.h>
 #include <sys/param.h>
 #include <sys/stat.h>
+#include <xlocale.h>
 
 #include "AppKitPrevention.h"
 
@@ -89,7 +90,7 @@ NSString *deltaCompressionStringFromMode(SPUDeltaCompressionMode mode)
 
 int compareFiles(const FTSENT **a, const FTSENT **b)
 {
-    return strcoll((*a)->fts_name, (*b)->fts_name);
+    return strcoll_l((*a)->fts_name, (*b)->fts_name, _c_locale);
 }
 
 NSString *pathRelativeToDirectory(NSString *directory, NSString *path)
@@ -112,9 +113,9 @@ uint16_t latestMinorVersionForMajorVersion(SUBinaryDeltaMajorVersion majorVersio
         case SUBinaryDeltaMajorVersion1:
             return 2;
         case SUBinaryDeltaMajorVersion2:
-            return 3;
+            return 4;
         case SUBinaryDeltaMajorVersion3:
-            return 0;
+            return 1;
     }
     return 0;
 }
@@ -255,8 +256,11 @@ BOOL getRawHashOfTreeAndFileTablesWithVersion(unsigned char *hashBuffer, NSStrin
             continue;
 
         NSString *relativePath = pathRelativeToDirectory(normalizedPath, stringWithFileSystemRepresentation(ent->fts_path));
-        if (relativePath.length == 0)
+        
+        // Ignore icon resource fork data
+        if (relativePath.length == 0 || [relativePath isEqualToString:CUSTOM_ICON_PATH]) {
             continue;
+        }
 
         unsigned char fileHash[CC_SHA1_DIGEST_LENGTH];
         if (!_hashOfFileContents(fileHash, ent, tempBuffer, tempBufferSize)) {
@@ -325,7 +329,7 @@ NSString *displayHashFromRawHash(const unsigned char *hash)
 {
     char hexHash[CC_SHA1_DIGEST_LENGTH * 2 + 1] = {0};
     for (size_t i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
-        sprintf(hexHash + i * 2, "%02x", hash[i]);
+        snprintf(hexHash + i * 2, 3, "%02x", hash[i]);
     }
     return @(hexHash);
 }
