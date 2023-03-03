@@ -81,6 +81,9 @@ struct GenerateAppcast: ParsableCommand {
     @Option(name: .customLong("release-notes-url-prefix"), help: ArgumentHelp("A URL that will be used as prefix for constructing URLs for release notes.", valueName: "url"), transform: { URL(string: $0) })
     var releaseNotesURLPrefix : URL?
     
+    @Flag(name: .customLong("embed-release-notes"), help: ArgumentHelp("Embed release notes in a new update's description. By default, release note files are only embedded if they are HTML and do not include DOCTYPE or body tags. This flag forces release note files for newly created updates to always be embedded."))
+    var embedReleaseNotes : Bool = false
+    
     @Option(name: .customLong("full-release-notes-url"), help: ArgumentHelp("A URL that will be used for the full release notes.", valueName: "url"))
     var fullReleaseNotesURL: String?
     
@@ -90,7 +93,16 @@ struct GenerateAppcast: ParsableCommand {
     @Option(name: .long, help: ArgumentHelp("An optional comma delimited list of application versions (specified by CFBundleVersion) to generate new update items for. By default, new update items are inferred from the available archives and current feed. Use this option if you need to insert only a specific new version or insert an old update in the feed at a different branch point (e.g. with a different minimum OS version or channel).", valueName: "versions"), transform: { Set($0.components(separatedBy: ",")) })
     var versions: Set<String>?
     
-    @Option(name: .long, help: ArgumentHelp("The maximum number of delta items to create for the latest update for each branch point (for example with a different minimum OS requirement).", valueName: "maximum-deltas"))
+    @Option(name: .customLong("maximum-versions"), help: ArgumentHelp("The maximum number of versions to preserve in the generated appcast for each branch point (e.g. with a different minimum OS requirement). If this value is 0, then all items in the appcast are preserved.", valueName: "maximum-versions"), transform: { value -> Int in
+        if let intValue = Int(value) {
+            return (intValue <= 0) ? Int.max : intValue
+        } else {
+            return DEFAULT_MAX_VERSIONS_PER_BRANCH_IN_FEED
+        }
+    })
+    var maxVersionsPerBranchInFeed: Int = DEFAULT_MAX_VERSIONS_PER_BRANCH_IN_FEED
+    
+    @Option(name: .long, help: ArgumentHelp("The maximum number of delta items to create for the latest update for each branch point (e.g. with a different minimum OS requirement).", valueName: "maximum-deltas"))
     var maximumDeltas: Int = DEFAULT_MAXIMUM_DELTAS
     
     @Option(name: .long, help: ArgumentHelp(COMPRESSION_METHOD_ARGUMENT_DESCRIPTION, valueName: "delta-compression"))
@@ -126,17 +138,8 @@ struct GenerateAppcast: ParsableCommand {
     @Argument(help: "The path to the directory containing the update archives and delta files.", transform: { URL(fileURLWithPath: $0, isDirectory: true) })
     var archivesSourceDir: URL
     
-    // Rough indication of how many versions we should keep in the feed per branch point
-    // Keep this option hidden from the user
-    @Option(name: .long, help: .hidden)
-    var maxVersionsPerBranchInFeed: Int = DEFAULT_MAX_VERSIONS_PER_BRANCH_IN_FEED
-    
     @Flag(help: .hidden)
     var verbose: Bool = false
-    
-    // CDATA text must contain <= this number of characters
-    @Option(name: .customLong("max-cdata-threshold"), help: .hidden)
-    var maxCDATAThreshold: Int = DEFAULT_MAX_CDATA_THRESHOLD
     
     @Flag(name: .customLong("disable-nested-code-check"), help: .hidden)
     var disableNestedCodeCheck: Bool = false
@@ -156,8 +159,9 @@ struct GenerateAppcast: ParsableCommand {
         Use the --versions option if you need to insert an update that is older than the latest update in your feed, or
         if you need to insert only a specific new version with certain parameters.
         
-        .html files that have the same filename as an archive (except for the file extension) will be used for release notes for that item.
-        If the contents of these files are short (< \(DEFAULT_MAX_CDATA_THRESHOLD) characters) and do not include a DOCTYPE or body tags, they will be treated as embedded CDATA release notes.
+        .html or .txt files that have the same filename as an archive (except for the file extension) will be used for release notes for that item.
+        For HTML release notes, if the contents of these files do not include a DOCTYPE or body tags, they will be treated as embedded CDATA release notes.
+        Release notes for new items can be forced to be embedded by passing --embed-release-notes
         
         For new update entries, Sparkle infers the minimum system OS requirement based on your update's LSMinimumSystemVersion provided
         by your application's Info.plist. If none is found, \(programName) defaults to Sparkle's own minimum system requirement (macOS 10.13).
@@ -282,7 +286,7 @@ struct GenerateAppcast: ParsableCommand {
                                                                 relativeTo: archivesSourceDir)
 
                 // Write the appcast
-                let (numNewUpdates, numExistingUpdates, numUpdatesRemoved) = try writeAppcast(appcastDestPath: appcastDestPath, appcast: appcast, fullReleaseNotesLink: fullReleaseNotesURL, maxCDATAThreshold: maxCDATAThreshold, link: link, newChannel: channel, majorVersion: majorVersion, ignoreSkippedUpgradesBelowVersion: ignoreSkippedUpgradesBelowVersion, phasedRolloutInterval: phasedRolloutInterval, criticalUpdateVersion: criticalUpdateVersion, informationalUpdateVersions: informationalUpdateVersions)
+                let (numNewUpdates, numExistingUpdates, numUpdatesRemoved) = try writeAppcast(appcastDestPath: appcastDestPath, appcast: appcast, fullReleaseNotesLink: fullReleaseNotesURL, preferToEmbedReleaseNotes: embedReleaseNotes, link: link, newChannel: channel, majorVersion: majorVersion, ignoreSkippedUpgradesBelowVersion: ignoreSkippedUpgradesBelowVersion, phasedRolloutInterval: phasedRolloutInterval, criticalUpdateVersion: criticalUpdateVersion, informationalUpdateVersions: informationalUpdateVersions)
 
                 // Inform the user, pluralizing "update" if necessary
                 let pluralizeUpdates = { pluralizeWord($0, "update") }

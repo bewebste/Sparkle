@@ -56,6 +56,7 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
     }
     
     let group = DispatchGroup()
+    var updateArchivesToSign: [ArchiveItem] = []
     
     var appcastByFeed: [FeedName: Appcast] = [:]
     for (feed, updates) in updatesByAppcast {
@@ -138,20 +139,23 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
                 updatesGroupedByBranch[branch] = Array(versions.sorted(by: descendingVersionComparator).prefix(maxVersionsPerBranchInFeed))
             }
             
-            // Remove extraneous versions for branches that have converged
-            for (branch, versions) in updatesGroupedByBranch {
-                guard branch.channel != nil else {
-                    continue
-                }
-                
-                let defaultChannelBranch = UpdateBranch(minimumSystemVersion: branch.minimumSystemVersion, maximumSystemVersion: branch.maximumSystemVersion, minimumAutoupdateVersion: branch.minimumAutoupdateVersion, channel: nil)
-                
-                guard let defaultChannelVersions = updatesGroupedByBranch[defaultChannelBranch] else {
-                    continue
-                }
-                
-                if descendingVersionComparator(defaultChannelVersions[0], versions[0]) {
-                    updatesGroupedByBranch[branch] = [versions[0]]
+            // Remove extraneous versions for branches that have converged,
+            // as long as the user doesn't opt into keeping all versions in the feed
+            if maxVersionsPerBranchInFeed < Int.max {
+                for (branch, versions) in updatesGroupedByBranch {
+                    guard branch.channel != nil else {
+                        continue
+                    }
+                    
+                    let defaultChannelBranch = UpdateBranch(minimumSystemVersion: branch.minimumSystemVersion, maximumSystemVersion: branch.maximumSystemVersion, minimumAutoupdateVersion: branch.minimumAutoupdateVersion, channel: nil)
+                    
+                    guard let defaultChannelVersions = updatesGroupedByBranch[defaultChannelBranch] else {
+                        continue
+                    }
+                    
+                    if descendingVersionComparator(defaultChannelVersions[0], versions[0]) {
+                        updatesGroupedByBranch[branch] = [versions[0]]
+                    }
                 }
             }
             
@@ -171,8 +175,11 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
                 continue
             }
             
+            updateArchivesToSign.append(update)
+            
             group.enter()
             DispatchQueue.global().async {
+#if SPARKLE_BUILD_LEGACY_DSA_SUPPORT
                 if let privateDSAKey = keys.privateDSAKey {
                     do {
                         update.dsaSignature = try dsaSignature(path: update.archivePath, privateDSAKey: privateDSAKey)
@@ -182,19 +189,24 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
                 } else if update.supportsDSA {
                     print("Note: did not sign with legacy DSA \(update.archivePath.path) because private DSA key file was not specified")
                 }
+#endif
                 if let publicEdKey = update.publicEdKey {
                     if let privateEdKey = keys.privateEdKey, let expectedPublicKey = keys.publicEdKey {
                         if publicEdKey == expectedPublicKey {
                             do {
                                 update.edSignature = try edSignature(path: update.archivePath, publicEdKey: publicEdKey, privateEdKey: privateEdKey)
                             } catch {
+                                update.signingError = error
                                 print(update, error)
                             }
                         } else {
                             print("Warning: SUPublicEDKey in the app \(update.archivePath.path) does not match key EdDSA in the Keychain. Run generate_keys and update Info.plist to match")
                         }
                     } else {
-                        print("Warning: could not sign \(update.archivePath.path) due to lack of private EdDSA key")
+                        let error = makeError(code: .insufficientSigningError, "Could not sign \(update.archivePath.path) due to lack of private EdDSA key")
+                        
+                        update.signingError = error
+                        print("Error: could not sign \(update.archivePath.path) due to lack of private EdDSA key")
                     }
                 }
 
@@ -331,6 +343,7 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
 
                 group.enter()
                 DispatchQueue.global().async {
+#if SPARKLE_BUILD_LEGACY_DSA_SUPPORT
                     if item.supportsDSA, let privateDSAKey = keys.privateDSAKey {
                         do {
                             delta.dsaSignature = try dsaSignature(path: deltaPath, privateDSAKey: privateDSAKey)
@@ -338,6 +351,7 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
                             print(delta.archivePath.lastPathComponent, error)
                         }
                     }
+#endif
                     if let publicEdKey = item.publicEdKey, let privateEdKey = keys.privateEdKey {
                         do {
                             delta.edSignature = try edSignature(path: deltaPath, publicEdKey: publicEdKey, privateEdKey: privateEdKey)
@@ -345,11 +359,17 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
                             print(delta.archivePath.lastPathComponent, error)
                         }
                     }
-                    if delta.dsaSignature != nil || delta.edSignature != nil {
-                        latestItem.deltas.append(delta)
-                    } else {
-                        markDeltaAsIgnored(delta: delta, markerPath: ignoreMarkerPath)
-                        print("Delta \(delta.archivePath.path) ignored, because it could not be signed")
+                    do {
+                        var hasAnyDSASignature = (delta.edSignature != nil)
+#if SPARKLE_BUILD_LEGACY_DSA_SUPPORT
+                        hasAnyDSASignature = hasAnyDSASignature || (delta.dsaSignature != nil)
+#endif
+                        if hasAnyDSASignature {
+                            latestItem.deltas.append(delta)
+                        } else {
+                            markDeltaAsIgnored(delta: delta, markerPath: ignoreMarkerPath)
+                            print("Delta \(delta.archivePath.path) ignored, because it could not be signed")
+                        }
                     }
                     group.leave()
                 }
@@ -362,6 +382,13 @@ func makeAppcasts(archivesSourceDir: URL, outputPathURL: URL?, cacheDirectory ca
     }
     
     group.wait()
+    
+    // Check for fatal signing errors
+    for update in updateArchivesToSign {
+        if let signingError = update.signingError {
+            throw signingError
+        }
+    }
 
     return appcastByFeed
 }
@@ -428,8 +455,19 @@ func moveOldUpdatesFromAppcasts(archivesSourceDir: URL, oldFilesDirectory: URL, 
                 print("Warning: failed to move \(archivePath.lastPathComponent) to \(oldFilesDirectory.lastPathComponent): \(error)")
             }
             
-            let releaseNotesFile = archivePath.deletingPathExtension().appendingPathExtension("html")
-            if fileManager.fileExists(atPath: releaseNotesFile.path) {
+            let htmlReleaseNotesFile = archivePath.deletingPathExtension().appendingPathExtension("html")
+            let plainTextReleaseNotesFile = archivePath.deletingPathExtension().appendingPathExtension("txt")
+            
+            let releaseNotesFile: URL?
+            if fileManager.fileExists(atPath: htmlReleaseNotesFile.path) {
+                releaseNotesFile = htmlReleaseNotesFile
+            } else if fileManager.fileExists(atPath: plainTextReleaseNotesFile.path) {
+                releaseNotesFile = plainTextReleaseNotesFile
+            } else {
+                releaseNotesFile = nil
+            }
+            
+            if let releaseNotesFile = releaseNotesFile {
                 do {
                     try suFileManager.updateModificationAndAccessTimeOfItem(at: releaseNotesFile)
                 } catch {

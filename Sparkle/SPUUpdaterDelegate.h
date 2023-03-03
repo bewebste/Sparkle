@@ -7,11 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#if defined(BUILDING_SPARKLE_SOURCES_EXTERNALLY)
+// Ignore incorrect warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wquoted-include-in-framework-header"
+#import "SUExport.h"
+#import "SPUUpdateCheck.h"
+#import "SPUUserUpdateState.h"
+#pragma clang diagnostic pop
+#else
 #import <Sparkle/SUExport.h>
 #import <Sparkle/SPUUpdateCheck.h>
+#import <Sparkle/SPUUserUpdateState.h>
+#endif
 
 @protocol SUVersionComparison;
-@class SPUUpdater, SUAppcast, SUAppcastItem;
+@class SPUUpdater, SUAppcast, SUAppcastItem, SPUUserUpdateState;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -236,12 +248,23 @@ SU_EXPORT extern NSString *const SUSystemProfilerPreferredLanguageKey;
 - (BOOL)updater:(SPUUpdater *)updater shouldProceedWithUpdate:(SUAppcastItem *)updateItem updateCheck:(SPUUpdateCheck)updateCheck error:(NSError * __autoreleasing *)error;
 
 /**
- Called when an update is skipped by the user.
+ Called when a user makes a choice to install, dismiss, or skip an update.
+ 
+ If the @c choice is `SPUUserUpdateChoiceDismiss` and @c state.stage is `SPUUserUpdateStageDownloaded` the downloaded update is kept
+ around until the next time Sparkle reminds the user of the update.
+ 
+ If the @c choice is `SPUUserUpdateChoiceDismiss` and  @c state.stage is `SPUUserUpdateStageInstalling` the update is still set to install on application termination.
+ 
+ If the @c choice is `SPUUserUpdateChoiceSkip` the user will not be reminded in the future for this update unless they initiate an update check themselves.
+ 
+ If @c updateItem.isInformationOnlyUpdate is @c YES the @c choice cannot be `SPUUserUpdateChoiceInstall`.
  
  @param updater The updater instance.
- @param item The appcast item corresponding to the update that the user skipped.
+ @param choice The choice (install, dismiss, or skip) the user made for this @c updateItem
+ @param updateItem The appcast item corresponding to the update that the user made a choice on.
+ @param state The current state for the update which includes if the update has already been downloaded or already installing.
  */
-- (void)updater:(SPUUpdater *)updater userDidSkipThisVersion:(SUAppcastItem *)item;
+- (void)updater:(SPUUpdater *)updater userDidMakeChoice:(SPUUserUpdateChoice)choice forUpdate:(SUAppcastItem *)updateItem state:(SPUUserUpdateState *)state;
 
 /**
  Returns whether the release notes (if available) should be downloaded after an update is found and shown.
@@ -445,6 +468,8 @@ SU_EXPORT extern NSString *const SUSystemProfilerPreferredLanguageKey;
 /* Deprecated methods */
 
 - (BOOL)updaterMayCheckForUpdates:(SPUUpdater *)updater __deprecated_msg("Please use -[SPUUpdaterDelegate updater:mayPerformUpdateCheck:error:] instead.");
+
+- (void)updater:(SPUUpdater *)updater userDidSkipThisVersion:(SUAppcastItem *)item __deprecated_msg("Please use -[SPUUpdaterDelegate updater:userDidMakeChoice:forUpdate:state:] instead.");
 
 @end
 
